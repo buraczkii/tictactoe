@@ -1,0 +1,14 @@
+## TODO list, major planning
+
+ - keep track of players within the tboard struct
+ - using user input, create 2 players that are users or computers
+ - allow user input to mark the board
+
+
+
+
+### nice to haves
+ - keep track of positions and rows using maps, getting rid of all switch case statements
+ - pretty print the result of the game: wins of player 1 vs player 2, ties
+
+
