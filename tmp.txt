@@ -1,14 +1,15 @@
-## TODO list, major planning
+## TODO list /planning
 
- - keep track of players within the tboard struct
- - using user input, create 2 players that are users or computers
- - allow user input to mark the board
+ - tally scores
+ - ask user their name
+ - improve prompts: note when computer has gone, tell user when it's their turn & whose turn it is, 
+ - add validation for user input
+ - For additional games, if there was a winner, let them start. If a tie, then flip a coin
 
 
-
-
-### nice to haves
- - keep track of positions and rows using maps, getting rid of all switch case statements
- - pretty print the result of the game: wins of player 1 vs player 2, ties
-
+## nice to haves
+ - keep track of positions and rows using maps, get rid of switch cases
+ - pretty print the results of the game: players names & wins, ties, maybe even chronological: Game 1: Tie, Game2: User1 Wins 
+ - see if you can refactor the code
+ - write unit tests? 
 

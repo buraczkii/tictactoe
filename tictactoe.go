@@ -20,29 +20,23 @@ type tboard struct {
 	nextPlayer *player
 	// keeps track of both players
 	players []*player // todo: should this just be fields player1 & 2?
-	// TODO; need to deprecate myTurn field
-	// true if computer's turn, false for user's turn
-	//myTurn bool
 	// the 3 rows of the board
 	row1, row2, row3 row
 	// keeps count of # of games, won by user, won by comp, and ties
 	// todo: am i keeping count inside the players now? i believe so 
+	// todo: could also keep a map of wins, ties, etc.
 	totalgames, userct, compct, tiect int
-	// number spots available
-	emptySpots int
 }
 
 type row struct {
-	// todo: an alternative could be a map, would remove all the switchcase stuff
 	p1, p2, p3 string
 }
 
 type player struct {
-	// what should I keep here? 
 	name string
 	computer bool // if this player is a computer or not
 	symbol string // symbol representing this player on the board
-	wins int // num wins for this user
+	wins int // num wins for this user // todo
 	opp *player // player's opponent
 }
 
@@ -69,20 +63,30 @@ func newboard() tboard {
 	return t
 }
 
+func (t *tboard) resetBoard() {
+	t.row1.p1 = " "
+	t.row1.p2 = " "
+	t.row1.p3 = " "
+	t.row2.p1 = " "
+	t.row2.p2 = " "
+	t.row2.p3 = " "
+	t.row3.p1 = " "
+	t.row3.p2 = " "
+	t.row3.p3 = " "
+}
+
+
 //checks if there is a winner
 func (t *tboard) checkIfWin() bool {
 	// todo: these checks feel messy, i wonder if there is another way 
 	if (t.row1.p1 == t.row1.p2 && t.row1.p2 == t.row1.p3 && t.row1.p1 != " ") || (t.row2.p1 == t.row2.p2 && t.row2.p2 == t.row2.p3 && t.row2.p1 != " ") || (t.row3.p1 == t.row3.p2 && t.row3.p2 == t.row3.p3 && t.row3.p1 != " ") {
-		fmt.Println("found a winner, across the row")
 		return true
 	}
 	if (t.row1.p1 == t.row2.p1 && t.row2.p1 == t.row3.p1 && t.row1.p1 != " ") || (t.row1.p2 == t.row2.p2 && t.row2.p2 == t.row3.p2 && t.row1.p2 != " ") || (t.row1.p3 == t.row2.p3 && t.row2.p3 == t.row3.p3 && t.row1.p3 != " ") {
-		fmt.Println("found a winner, across a column")
 		return true
 	}
 	if (t.row1.p1 == t.row2.p2 && t.row2.p2 == t.row3.p3) || (t.row1.p3 == t.row2.p2 && t.row2.p2 == t.row3.p1) {
 		if t.row2.p2 != " " {
-			fmt.Println("found a winner, across a diagonal")
 			return true
 		}
 	}
@@ -230,23 +234,12 @@ func printExampleBoard() {
 
 
 func (t *tboard) randomSetTurn() {
-	// todo: take into account 2 players, assign turn randomly
 	rand.Seed(time.Now().UnixNano())
 	rn := rand.Intn(2)
-	//if rn == 1 {
-	//	t.myTurn = true
-	//} else {
-	//	t.myTurn = false
-	//}
-	// todo: remove myTurn code
 	t.nextPlayer = t.players[rn]
 }
 
 func main() {
-	// TODO: give an option for the user to choose to play the game by themselves or for the computer to play with them
-	// choose player 1: user or computer
-	// choose player 2: user or computer
-	// then let them play against each other. maybe need another struct for player
 	fmt.Println("\n\nxoxoxoxoxoxoxoxxoxoxoxo Tic Tac Toe oxoxoxooxoxoxoxoxoxoxoxoxo")
 
 	fmt.Println("\nINSTRUCTIONS")
@@ -260,7 +253,6 @@ func main() {
 	t := newboard() 
 	var player1, player2 player
 
-	// todo: ask user if they want a computer or not
 	fmt.Println("How many human users are playing? Pick 0, 1, or 2.")
 	var input string
 	fmt.Scanln(&input)
@@ -287,34 +279,49 @@ func main() {
 	t.players = plyrs
 
 	t.randomSetTurn()
-	//if t.myTurn {
-	//	fmt.Println("\tCoin flipped, Computer goes first")
-	//} else {
-	//	fmt.Println("\tCoin flipped, User goes first.")
-	//}
 	fmt.Printf("\nPlayer to go first is: %v", &t.nextPlayer)
-	fmt.Printf("\nPlayers associated with the board: %v\n", t.players)
 
-	fmt.Println("\tThe user will be symbolized by '", USR, "' and the computer will be symbolized by '", CMP, "'")
-	//t.computerTakesATurn()
-	//t.printBoard()
+	for _, p := range t.players {
+		fmt.Println("Player ", p.name, " will be symbolized by ", p.symbol)
+	}
+
+	//fmt.Println("\tThe user will be symbolized by '", USR, "' and the computer will be symbolized by '", CMP, "'")
 	for true {
-		//t.computerTakesATurn()
 		t.printBoard()	
 
-		if t.checkIfWin() {
-			fmt.Println("game over, there is a winner")
-			break
-			// check who the winner is depending on who went last
-			// increment numGames, incrememnt for winner
-		} else if t.checkIfFull() {
-			fmt.Println("game over, the board is full. Tie.")
-			// incrememnet numGames, ties
-			break
+		if t.checkIfWin() || t.checkIfFull() {
+			fmt.Println("GAME OVER")
+			t.totalgames++
+			// store win or full as a field so dont have to run code again?
+			if t.checkIfWin() {
+				// todo: pretty print a player's name? helper fn?
+				fmt.Println("There is a WINNER! Congrats ", t.nextPlayer.opp.name, "!")
+				// todo: create a map of user name to #wins	
+			} else if t.checkIfFull() {
+				fmt.Println("The board is full. This game is a TIE.")
+				t.tiect++
+			}
+
+			fmt.Println("Would you like to play again? y/n \n(If you wish to change the number of humans vs computer players, please exit the program and restart.)")
+			var again string
+			fmt.Scanln(&again)
+			if again == "y" || again == "yes" || again == "YES" || again == "Y" {
+				// todo: winner goes first, flip coin in case of tie
+				fmt.Printf("\n\nPlaying again! Resetting board. Flipping a coin to see who goes first.\n")
+				t.resetBoard()
+				t.randomSetTurn()
+				fmt.Printf("\nPlayer to go first is: %v", &t.nextPlayer)
+				continue
+			} else {
+				// any exit text?
+				break
+			}
+
 		}
 
 		// next player takes their turn
 		if t.nextPlayer.computer {
+			fmt.Println("User ", t.nextPlayer.name, "'s turn to play. Automated.")
 			rand.Seed(time.Now().UnixNano())
 			spots := t.getEmptySpots()
 			rn := rand.Intn(len(spots))
@@ -322,11 +329,12 @@ func main() {
 			t.markSpot(spot, t.nextPlayer.symbol)
 
 		} else {
+			fmt.Println("User ", t.nextPlayer.name, "'s turn to play.")
 			// ask for user input
 			var spot string
-			fmt.Println("Please enter the location you wish to play")
+			fmt.Println("Please enter the location you wish to play:")
 			fmt.Scanln(&spot)
-			// todo: confirm spot is empty, else ask again
+			// todo: confirm the following code works
 			for !t.checkIfSpotEmpty(spot) {
 				fmt.Println("That spot is taken, please choose another")
 				fmt.Scanln(&spot)
@@ -336,12 +344,10 @@ func main() {
 		// set the next player's turn
 		t.nextPlayer = t.nextPlayer.opp
 
-		// ask if user wants to play again
-		// if yes, clear the board and carry on in the loop. might need to do some of the startup again like random coin flip
-		// if not play again, exit the for loop
 	}
 
-	fmt.Println("\n\n Thanks for playing! Goodbye!")
+	// todo: pretty print the results of the game here
+	fmt.Println("\n\n Exiting game ...\n\n Thanks for playing! Goodbye!")
 	fmt.Println("\noxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxooxoxoxoxoxoxo\n")
 }
 
