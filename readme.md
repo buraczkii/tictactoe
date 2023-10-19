@@ -1,5 +1,5 @@
 
-# xoxoxoxoxoxoxoxxoxoxoxo Tic Tac Toe oxoxoxooxoxoxoxoxoxoxoxoxo
+# xoxoxoxoxoxo Tic Tac Toe oxoxoxoxoxoxo
 
 An interactive tictactoe game on the command line. Written in go.
 
@@ -16,10 +16,11 @@ An interactive tictactoe game on the command line. Written in go.
 	-------------------
 
 ## Run the program / Play tictactoe
-````bash
+```bash
 go run tictactoe.go
 ```
 
 ## Further development
 The file 'tmp.txt' holds todos and 'nice to haves' for improving this program. It is currently in a polished working state and all code can always be improved upon (: . 
-# oxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxooxoxoxoxoxoxo
+
+# xoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxo
