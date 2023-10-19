@@ -1,10 +1,8 @@
 ## TODO list /planning
-
  - tally scores
- - ask user their name
- - improve prompts: note when computer has gone, tell user when it's their turn & whose turn it is, 
  - add validation for user input
  - For additional games, if there was a winner, let them start. If a tie, then flip a coin
+ - allow users to type in a lowercase like 2b
 
 
 ## nice to haves
@@ -12,4 +10,9 @@
  - pretty print the results of the game: players names & wins, ties, maybe even chronological: Game 1: Tie, Game2: User1 Wins 
  - see if you can refactor the code
  - write unit tests? 
-
+ - can you just update the board? like in place in the terminal? that would be cool
+    - "\r" is a carriage return but just returns to the previous line so i dont think it would entirely help with multi-line output
+    - https://pkg.go.dev/github.com/gbin/goncurses
+    - https://pkg.go.dev/github.com/seehuhn/go-ncurses
+    - https://earthly.dev/blog/tui-app-with-go/
+    - https://appliedgo.net/tui/ 
