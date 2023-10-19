@@ -16,6 +16,7 @@ An interactive tictactoe game on the command line. Written in go.
 	 3 | 3A | 3B | 3C |
 	-------------------
 ```
+- You can play more than once but if you wish to change the # of human players vs computer players, the program needs to be restarted.
 
 ## Run the program / Play tictactoe
 ```bash
@@ -23,6 +24,6 @@ go run tictactoe.go
 ```
 
 ## Further development
-The file 'tmp.txt' holds todos and 'nice to haves' for improving this program. It is currently in a polished working state and all code can always be improved upon (: . 
+The file 'tmp.txt' holds todos and 'nice to haves' for improving this program. It is currently in a polished working state and all code can always be improved upon (: . Also open to suggestions and ideas!
 
 # xoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxoxo
